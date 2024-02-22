@@ -7,6 +7,8 @@ import { BASE_URL } from "../utils";
 import { Link } from "react-router-dom"
 // models
 import { MEANING } from "../models";
+// react-toastify
+// import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -16,6 +18,8 @@ const Homepage = () => {
     const [loading, setLoading] = useState(false)
     const [meaning, setMeaning] = useState([] as MEANING)
 
+   
+
     const searchWord = async () => {
         await axios.get(`${BASE_URL}/${search}`)
             .then(response => {
@@ -23,7 +27,9 @@ const Homepage = () => {
                 setLoading(false)
             })
             .catch(error => {
-                console.log(error)
+                console.log(error.response.data.message)
+                alert(error.response.data.message)
+
                 setLoading(false)
             })
     }
@@ -50,6 +56,7 @@ const Homepage = () => {
 
     return (
         <section>
+
             <form onSubmit={handleSearch} className="flex my-5 sm:mx-20 mx-5 sm:gap-5 gap-2 items-center">
                 <TextInput type="search" className="w-full" value={search} onChange={event => setSearch(event.target.value)} required />
                 <div className="">
@@ -60,7 +67,7 @@ const Homepage = () => {
             </form>
 
 
-            {loading ? <Spinner className="text-center" size={'xl'} /> : <section className="mx-10">
+            {loading ? <Spinner className="text-center flex items-center" size={'xl'} /> : <section className="mx-10">
                 {
                     meaning.map((mean, index) => {
                         return (
