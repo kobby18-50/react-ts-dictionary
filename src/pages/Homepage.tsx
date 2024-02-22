@@ -1,33 +1,3 @@
-type PHONETICS = {
-    text: string,
-    audio: string,
-    sourceUrl: string
-}[]
-
-type MEANINGS = {
-    partOfSpeech: string,
-    definitions: {
-        definition: string,
-        synonyms: string[] | null,
-        antonyms: string[] ,
-        example: string | null
-    }[],
-    synonyms: string[] | null,
-    antonyms: string[] | null,
-
-
-}[]
-
-type MEANING = {
-    word: string,
-    phonetic: string,
-    phonetics: PHONETICS,
-    meanings: MEANINGS,
-
-    sourceUrls: string[]
-
-}[]
-
 import axios from "axios";
 // flowbite
 import { Button, Spinner, TextInput } from "flowbite-react";
@@ -35,6 +5,8 @@ import { Button, Spinner, TextInput } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../utils";
 import { Link } from "react-router-dom"
+// models
+import { MEANING } from "../models";
 
 
 
@@ -47,10 +19,7 @@ const Homepage = () => {
     const searchWord = async () => {
         await axios.get(`${BASE_URL}/${search}`)
             .then(response => {
-                // console.log(response.data)
                 setMeaning(response.data)
-
-                console.log(meaning)
                 setLoading(false)
             })
             .catch(error => {
@@ -60,7 +29,9 @@ const Homepage = () => {
     }
 
     useEffect(() => {
+        setLoading(true)
         searchWord()
+        setLoading(false)
     }, [])
 
     const handleSearch = async (event: React.FormEvent<HTMLElement>) => {
@@ -79,7 +50,7 @@ const Homepage = () => {
 
     return (
         <section>
-            <form onSubmit={handleSearch} className="flex my-5 mx-20 gap-5 items-center">
+            <form onSubmit={handleSearch} className="flex my-5 sm:mx-20 mx-5 sm:gap-5 gap-2 items-center">
                 <TextInput type="search" className="w-full" value={search} onChange={event => setSearch(event.target.value)} required />
                 <div className="">
 
@@ -104,7 +75,7 @@ const Homepage = () => {
 
                                 {/* audio */}
                                 <p className="text-lg">Audio</p>
-                                <div className="flex gap-7">
+                                <div className="flex flex-wrap gap-7">
                                     {
                                         mean.phonetics.map((audio, index) =>
                                         (
@@ -171,7 +142,7 @@ const Homepage = () => {
                                                     {meaning.antonyms ? <section className="py-8">
                                                         <p>Antonyms</p>
 
-                                                        <div className="flex gap-5">
+                                                        <div className="flex flex-wrap gap-2 sm:gap-5">
                                                         {
                                                             meaning.antonyms.map((antonym) => (
                                                                 <p className="text-teal-900 font-semibold">{antonym}</p>
@@ -185,7 +156,7 @@ const Homepage = () => {
                                                     {meaning.synonyms ? <section className="py-8">
                                                         <p>Synonyms</p>
 
-                                                        <div className="flex gap-5">
+                                                        <div className="flex flex-wrap gap-2 sm:gap-5">
                                                         {
                                                             meaning.synonyms.map((synonym) => (
                                                                 <p className="text-teal-900 font-semibold">{synonym}</p>

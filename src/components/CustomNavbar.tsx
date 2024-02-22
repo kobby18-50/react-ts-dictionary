@@ -11,7 +11,7 @@ const CustomNavbar = () => {
           <img src={LOGO} className="mr-3 h-6 sm:h-9" alt="Word Vault" />
           <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Vocab Vault</span>
         </Navbar.Brand>
-        <Navbar.Toggle />
+        
         <Navbar.Collapse>
           <Navbar.Link>
           </Navbar.Link>
